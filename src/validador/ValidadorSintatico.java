@@ -9,7 +9,7 @@ import estruturas.Pilha;
  *
  * @author gabriel
  */
-public class ValidadorSIntatico {
+public class ValidadorSintatico {
     
     public static void validar(String expressao) throws Exception{
         if (expressao == null || expressao.trim().isEmpty()){

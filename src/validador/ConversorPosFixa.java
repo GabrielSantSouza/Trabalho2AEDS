@@ -1,4 +1,4 @@
-package avaliador;
+package validador;
 
 import estruturas.Pilha;
 
