@@ -28,13 +28,15 @@ public class Pilha<T> {
         this.size ++;
     }
     
-    public T pop() throws Exception{
-        if(this.vazia()){
-            throw new Exception("Erro: A pilha está vazia");
-        }
-        return this.topo.getItem();
-        
+    public T pop() throws Exception {
+    if (this.vazia()) {
+        throw new Exception("Erro: A pilha está vazia");
     }
+    T item = this.topo.getItem();
+    this.topo = this.topo.getProx();
+    this.size--;
+    return item;
+}
     
     public boolean vazia(){
         return this.topo == null;
