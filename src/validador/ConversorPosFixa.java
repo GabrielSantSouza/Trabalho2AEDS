@@ -4,59 +4,101 @@ import estruturas.Pilha;
 
 public class ConversorPosFixa {
     
-    public static String converter(String infixa) throws Exception {
-        Pilha<Character> pilha = new Pilha<>();
-        StringBuilder saida = new StringBuilder();
-        infixa = infixa.replaceAll("\\s+", "");
+    public static String converter(String expressaoInfixa) throws Exception {
+        if (expressaoInfixa == null) {
+            throw new IllegalArgumentException("A expressão de entrada não pode ser nula.");
+        }
 
-        for (char c : infixa.toCharArray()) {
-            // Se for número (operando), vai direto para a saída
+        StringBuilder saida = new StringBuilder();
+        Pilha<Character> pilhaOperadores = new Pilha<Character>();
+
+        // Remove espaços em branco para percorrer caractere a caractere de forma uniforme
+        String expLimpa = expressaoInfixa.replaceAll("\\s+", "");
+
+        for (int i = 0; i < expLimpa.length(); i++) {
+            char c = expLimpa.charAt(i);
+
+            // 1. Se for dígito numérico, vai direto para a saída pós-fixa
             if (Character.isDigit(c)) {
-                saida.append(c);
+                saida.append(c).append(" ");
             } 
-            // Abre parêntese vai para a pilha
+            // 2. Parêntese de abertura '(' é sempre empilhado
             else if (c == '(') {
-                pilha.push(c);
+                pilhaOperadores.push(c);
             } 
-            // Fecha parêntese desempilha até encontrar a abertura correspondente
+            // 3. Parêntese de fechamento ')': desempilha até encontrar o '(' correspondente
             else if (c == ')') {
-                while (!pilha.vazia() && pilha.topo() != '(') {
-                    saida.append(pilha.pop());
+                while (!pilhaOperadores.vazia() && pilhaOperadores.topo() != '(') {
+                    saida.append(pilhaOperadores.pop()).append(" ");
                 }
-                if (!pilha.vazia() && pilha.topo() == '(') {
-                    pilha.pop(); // Remove o '(' da pilha e descarta os parênteses
+                // Descarta o '(' que estava no topo da pilha
+                if (!pilhaOperadores.vazia()) {
+                    pilhaOperadores.pop();
                 }
             } 
-            // Operadores
+            // 4. Se for operador (+, -, *, /, ^)
             else if (ValidadorSintatico.isOperador(c)) {
-                while (!pilha.vazia() && pilha.topo() != '(') {
-                    char topo = pilha.topo();
-                    int precC = getPrecedencia(c);
-                    int precTopo = getPrecedencia(topo);
-                    
-                    // Exponenciação (^) é associativa à direita, os demais à esquerda
-                    if (precTopo > precC || (precTopo == precC && c != '^')) {
-                        saida.append(pilha.pop());
+                /*
+                 * Desempilha enquanto:
+                 * - A pilha não estiver vazia;
+                 * - O topo da pilha não for '(';
+                 * - O topo possuir precedência MAIOR que o operador atual, OU
+                 * - O topo possuir precedência IGUAL e for associativo à ESQUERDA (todos exceto '^').
+                 */
+                while (!pilhaOperadores.vazia() && pilhaOperadores.topo() != '(') {
+                    char topo = pilhaOperadores.topo();
+                    int precTopo = obterPrecedencia(topo);
+                    int precAtual = obterPrecedencia(c);
+
+                    if (precTopo > precAtual || (precTopo == precAtual && !isAssociativoDireita(c))) {
+                        saida.append(pilhaOperadores.pop()).append(" ");
                     } else {
                         break;
                     }
                 }
-                pilha.push(c);
+                // Empilha o operador atual
+                pilhaOperadores.push(c);
             }
         }
-        
-        // Esvazia os operadores restantes na pilha jogando para a saída
-        while (!pilha.vazia()) {
-            saida.append(pilha.pop());
+
+        // 5. Desempilha todos os operadores remanescentes na pilha
+        while (!pilhaOperadores.vazia()) {
+            saida.append(pilhaOperadores.pop()).append(" ");
         }
-        
-        return saida.toString();
+
+        return saida.toString().trim();
     }
 
-    private static int getPrecedencia(char op) {
-        if (op == '^') return 3;
-        if (op == '*' || op == '/') return 2;
-        if (op == '+' || op == '-') return 1;
-        return 0; // Para sentinela '('
+    /**
+     * Retorna a ordem de precedência do operador.
+     * Níveis:
+     *   3 -> ^ (Exponenciação)
+     *   2 -> * e / (Multiplicação e Divisão)
+     *   1 -> + e - (Adição e Subtração)
+     *   0 -> Demais caracteres (ex: '(' dentro da pilha)
+     */
+    private static int obterPrecedencia(char operador) {
+        switch (operador) {
+            case '^':
+                return 3;
+            case '*':
+            case '/':
+                return 2;
+            case '+':
+            case '-':
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Informa se o operador é associativo à direita.
+     * Conforme a especificação do trabalho:
+     * - '^' é associativo à direita: A ^ B ^ C = A ^ (B ^ C)
+     * - '+', '-', '*', '/' são associativos à esquerda
+     */
+    private static boolean isAssociativoDireita(char operador) {
+        return operador == '^';
     }
 }

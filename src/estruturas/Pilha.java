@@ -48,4 +48,11 @@ public class Pilha<T> {
         this.topo = null;
         this.size = 0;
     }
+    
+    public T topo() {
+        if (this.vazia()) {
+            return null;
+        }
+        return this.topo.getItem();
+    }
 }
