@@ -1,0 +1,20 @@
+===============================================================================
+REGISTRO INDIVIDUAL DE ATIVIDADES - TRABALHO PRÁTICO 2 (AEDS 1 - CEFET-MG)
+Nome do Aluno: Gabriel Santos Souza
+===============================================================================
+
+Data ; Horas Trabalhadas ; Tipo Tarefa ; Descrição da Tarefa Realizada
+28/10/2026 ; 2.0 ; Estudar ; Leitura detalhada do documento de especificação do Trabalho 2 e análise das restrições de uso de coleções nativas do Java.
+29/10/2026 ; 1.5 ; Projetar ; Modelagem da estrutura de pacotes do sistema (estruturas, avaliador e app) e definição da árvore de diretórios.
+30/10/2026 ; 2.0 ; Especificar os módulos/pacote/classes ; Elaboração dos requisitos das classes Celula<T> e Pilha<T> com generics e apontadores dinâmicos.
+02/11/2026 ; 2.5 ; Codificar módulo ; Codificação completa da classe Celula.java e dos métodos de inserção/remoção da classe Pilha.java.
+03/11/2026 ; 1.5 ; Revisar código do módulo ; Verificação de vazamento de memória e tratamento de ponteiros nulos no desempilhamento da classe Pilha.java.
+05/11/2026 ; 2.0 ; Especificar as funções/métodos ; Detalhamento das 7 regras de validação sintática da expressão infixa no documento de projeto.
+06/11/2026 ; 0.5 ; Codificar módulo ; Implementação do algoritmo de checagem sintática no arquivo ValidadorSintatico.java usando Pilha<Character>.
+08/11/2026 ; 2.0 ; Codificar módulo ; Construção da interface interativa via console no arquivo Principal.java com laço de leitura Scanner.
+10/11/2026 ; 2.5 ; Realizar os testes ; Execução de suíte de testes de validação com expressões inválidas (parênteses tortos, operadores adjacentes e parênteses vazios).
+11/11/2026 ; 1.5 ; Diagnosticar e corrigir os problemas encontrados ; Correção de bug no ValidadorSintatico que aceitava operadores nas posições iniciais e finais.
+12/11/2026 ; 1.0 ; Revisar especificações ; Revisão final da documentação individual e organização dos arquivos para submissão .zip no SIGAA.
+
+Total de Horas Trabalhadas: 19 horas
+===============================================================================
